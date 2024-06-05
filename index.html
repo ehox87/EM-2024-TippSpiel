@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EM 2024 Tippspiel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>EM 2024 Tippspiel</h1>
+        <img id="swiss-logo" src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg" alt="Schweiz Logo">
+    </header>
+
+    <div id="registration">
+        <h2>Registrierung</h2>
+        <input type="text" id="name" placeholder="Name eingeben">
+        <button onclick="register()">Registrieren</button>
+    </div>
+
+    <div id="tippabgabe" style="display:none;">
+        <h2>Tipps abgeben</h2>
+        <div id="spiele"></div>
+        <button onclick="submitTips()">Tipps abschicken</button>
+    </div>
+
+    <div id="rangliste">
+        <h2>Rangliste</h2>
+        <div id="leaderboard"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
