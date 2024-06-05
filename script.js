@@ -2,10 +2,20 @@ const spiele = [
     {datum: "14. Juni", teamA: "Deutschland", teamB: "Schottland"},
     {datum: "15. Juni", teamA: "Ungarn", teamB: "Schweiz"},
     // Weitere Spiele hier hinzufügen...
+    {datum: "16. Juni", teamA: "Spanien", teamB: "Portugal"},
+    {datum: "17. Juni", teamA: "Frankreich", teamB: "Italien"},
+    // Weitere Spiele hier hinzufügen...
 ];
 
-const users = [];
-const tips = {};
+let users = [];
+let tips = {};
+
+window.onload = function() {
+    if(localStorage.getItem('tips')) {
+        tips = JSON.parse(localStorage.getItem('tips'));
+        updateLeaderboard();
+    }
+}
 
 function register() {
     const name = document.getElementById('name').value.trim();
@@ -43,6 +53,7 @@ function submitTips() {
         return {spiel, teamA, teamB};
     });
     updateLeaderboard();
+    localStorage.setItem('tips', JSON.stringify(tips));
     alert("Tipps erfolgreich abgegeben!");
     document.getElementById('tippabgabe').style.display = 'none';
     document.getElementById('registration').style.display = 'block';
@@ -55,8 +66,13 @@ function updateLeaderboard() {
         const userTips = tips[user];
         if (userTips) {
             const userDiv = document.createElement('div');
-            userDiv.innerHTML = `<strong>${user}</strong>: ${JSON.stringify(userTips)}`;
+            let formattedTips = '';
+            userTips.forEach(tip => {
+                formattedTips += `<p>${tip.spiel.datum}: ${tip.teamA} - ${tip.teamB}</p>`;
+            });
+            userDiv.innerHTML = `<strong>${user}</strong>: ${formattedTips}`;
             leaderboardDiv.appendChild(userDiv);
         }
     });
 }
+
