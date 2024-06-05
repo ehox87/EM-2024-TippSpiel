@@ -1,17 +1,17 @@
 const spiele = [
-    {datum: "14. Juni", teamA: "Deutschland", teamB: "Schottland"},
-    {datum: "15. Juni", teamA: "Ungarn", teamB: "Schweiz"},
-    // Weitere Spiele hier hinzufügen...
-    {datum: "16. Juni", teamA: "Spanien", teamB: "Portugal"},
-    {datum: "17. Juni", teamA: "Frankreich", teamB: "Italien"},
-    // Weitere Spiele hier hinzufügen...
+    { datum: "14. Juni", teamA: "Deutschland", teamB: "Schottland" },
+    { datum: "15. Juni", teamA: "Ungarn", teamB: "Schweiz" },
+    // Weitere Gruppenspiele hier hinzufügen...
+    { datum: "16. Juni", teamA: "Spanien", teamB: "Portugal" },
+    { datum: "17. Juni", teamA: "Frankreich", teamB: "Italien" },
+    // Weitere Gruppenspiele hier hinzufügen...
 ];
 
 let users = [];
 let tips = {};
 
-window.onload = function() {
-    if(localStorage.getItem('tips')) {
+window.onload = function () {
+    if (localStorage.getItem('tips')) {
         tips = JSON.parse(localStorage.getItem('tips'));
         updateLeaderboard();
     }
@@ -50,7 +50,7 @@ function submitTips() {
     tips[user] = spiele.map((spiel, index) => {
         const teamA = document.getElementById(`teamA_${index}`).value;
         const teamB = document.getElementById(`teamB_${index}`).value;
-        return {spiel, teamA, teamB};
+        return { spiel, teamA, teamB };
     });
     updateLeaderboard();
     localStorage.setItem('tips', JSON.stringify(tips));
@@ -75,4 +75,5 @@ function updateLeaderboard() {
         }
     });
 }
+
 
