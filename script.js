@@ -1,36 +1,26 @@
 const spiele = [
-    { datum: "14. Juni", teamA: "Deutschland", teamB: "Schottland" },
-    { datum: "15. Juni", teamA: "Ungarn", teamB: "Schweiz" },
-    // Weitere Gruppenspiele hier hinzufügen...
-    { datum: "16. Juni", teamA: "Spanien", teamB: "Portugal" },
-    { datum: "17. Juni", teamA: "Frankreich", teamB: "Italien" },
+    {datum: "14. Juni", teamA: "Deutschland", teamB: "Schottland"},
+    {datum: "15. Juni", teamA: "Ungarn", teamB: "Schweiz"},
     // Weitere Gruppenspiele hier hinzufügen...
 ];
 
 let users = [];
 let tips = {};
 
-window.onload = function () {
-    if (localStorage.getItem('tips')) {
-        tips = JSON.parse(localStorage.getItem('tips'));
-        updateLeaderboard();
-    }
-}
-
-function register() {
+function startTipping() {
     const name = document.getElementById('name').value.trim();
     if (name && !users.includes(name)) {
         users.push(name);
         document.getElementById('registration').style.display = 'none';
         document.getElementById('tippabgabe').style.display = 'block';
         document.getElementById('name').value = '';
-        populateSpiele(name);
+        populateGroupGames(name);
     } else {
         alert("Name ist ungültig oder bereits vergeben!");
     }
 }
 
-function populateSpiele(name) {
+function populateGroupGames(name) {
     const spieleDiv = document.getElementById('spiele');
     spieleDiv.innerHTML = '';
     spiele.forEach((spiel, index) => {
@@ -42,21 +32,30 @@ function populateSpiele(name) {
         `;
         spieleDiv.appendChild(spielDiv);
     });
-    document.getElementById('spiele').dataset.user = name;
+    document.getElementById('tippabgabe').dataset.user = name;
 }
 
-function submitTips() {
-    const user = document.getElementById('spiele').dataset.user;
+function submitGroupTips() {
+    const user = document.getElementById('tippabgabe').dataset.user;
     tips[user] = spiele.map((spiel, index) => {
         const teamA = document.getElementById(`teamA_${index}`).value;
         const teamB = document.getElementById(`teamB_${index}`).value;
-        return { spiel, teamA, teamB };
+        return {spiel, teamA, teamB};
     });
-    updateLeaderboard();
-    localStorage.setItem('tips', JSON.stringify(tips));
-    alert("Tipps erfolgreich abgegeben!");
     document.getElementById('tippabgabe').style.display = 'none';
-    document.getElementById('registration').style.display = 'block';
+    document.getElementById('ko-runden').style.display = 'block';
+}
+
+function submitFinalTips() {
+    const team1 = document.getElementById('team1').value;
+    const team1goals = document.getElementById('team1goals').value;
+    const team2 = document.getElementById('team2').value;
+    const team2goals = document.getElementById('team2goals').value;
+    // Speichere die Finaltipps oder berechne die Punkte
+    document.getElementById('ko-runden').style.display = 'none';
+    document.getElementById('finalspiel').style.display = 'none';
+    document.getElementById('rangliste').style.display = 'block';
+    updateLeaderboard();
 }
 
 function updateLeaderboard() {
@@ -65,15 +64,20 @@ function updateLeaderboard() {
     users.forEach(user => {
         const userTips = tips[user];
         if (userTips) {
-            const userDiv = document.createElement('div');
-            let formattedTips = '';
+            let score = 0;
             userTips.forEach(tip => {
-                formattedTips += `<p>${tip.spiel.datum}: ${tip.teamA} - ${tip.teamB}</p>`;
+                // Hier kannst du die Punkte für korrekte Tipps berechnen
+                // Z.B. +3 Punkte für korrektes Ergebnis
+                if (tip.teamA === correctResult.teamA && tip.teamB === correctResult.teamB) {
+                    score += 3;
+                }
             });
-            userDiv.innerHTML = `<strong>${user}</strong>: ${formattedTips}`;
+            const userDiv = document.createElement('div');
+            userDiv.innerHTML = `<strong>${user}</strong>: ${score} Punkte`;
             leaderboardDiv.appendChild(userDiv);
         }
     });
 }
+
 
 
